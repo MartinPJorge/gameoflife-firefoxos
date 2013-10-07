@@ -1,0 +1,15 @@
+{
+  "name": "Game Of Life",
+  "version": "1.0",
+  "description": "Implementation of John Conway's game of life.",
+  "launch_path": "/index.html",
+  "icons": {
+    "128": "/images/icon.png"
+  },
+  "developer": {
+    "name": "Jorge Martín Pérez",
+    "url": "http://www.twitter.com/MartinPJorge"
+  },
+  "default_locale": "en",
+  "orientation": ["portrait"]
+}
