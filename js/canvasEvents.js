@@ -1,5 +1,5 @@
 var mouseDown = 0;
-var grid;  //Rejilla del juego
+/* var grid;  //Rejilla del juego */
 var currCol;
 var currRow;
 var moving = 0;
@@ -28,12 +28,7 @@ function mod(a,n) {
  */
 function abajo (event, grid) {
 	var ret;
-	if(grid == grid2) {
-		ret = coorToCell2(event.touches[0]);
-	}
-	else {
-		ret = grid.coorToCell(event.touches[0]);
-	}
+	ret = grid.coorToCell(event.touches[0]);
 	
 	var numCol = ret[0],
 		numRow = ret[1],
@@ -79,12 +74,9 @@ function mover (event, grid) {
 	event.preventDefault();
 
 	var ret;
-	if(grid == grid2) {
-		ret = coorToCell2(event.touches[0]);
-	}
-	else {
-		ret = grid.coorToCell(event.touches[0]);
-	}
+	ret = grid.coorToCell(event.touches[0]);
+
+
 	var numCol = ret[0], numRow = ret[1],
 	    cellThere = grid.cellAt(numCol, numRow);
 
@@ -108,33 +100,6 @@ function mover (event, grid) {
 	}
 
 	moving = 0;
-}
-
-
-
-//  ------------- QUITAR -------------
-function entraRejilla() {
-	var ancho = parseInt(document.getElementById('ancho').value);
-	var alto = parseInt(document.getElementById('alto').value);
-
-	var totalWidth = (alto * ancho) + (2*(alto-1));
-	if(document.body.clientWidth < totalWidth)
-		return false;
-
-	return true;
-}
-
-/**
- * Muestra la rejilla de la app.
- *
- * @param {number} rows Numero de filas.
- * @param {number} cols Numero de columnas.
- * @param {number} width Ancho de celda.
- * @param {CanvasHTMLElement} canvas El canvas de la rejilla.
- */
-function showGrid(rows, cols, width, canvas) {
-	grid = new Grid(rows, cols, width,canvas);
-	grid.drawGrid();
 }
 
 /**
@@ -166,110 +131,4 @@ function botonBorrar () {
 }
 
 
-//  ----------- QUITAR ---------
-function changeRejilla() {
-	if(grid.getWithLine())
-		grid.removeLines();
-	else {
-		grid.drawGrid();
-		for(var i = 0; i < grid.getRows(); i++)
-			for(var j = 0; j < grid.getCols(); j++)
-				if(grid.getCells()[i][j].getLife() == 1)
-					grid.drawLife(j,i);
-	}
-}
-
-/**
- * Carga la rejilla de la app.
- * @param {CanvasHTMLElement} canvas El canvas que le pasamos a la rejilla.
- */
-function cargaGrid(canvas) {
-	//anchura
-	var ancho = document.body.clientWidth;
-	var numCeldasAncho = Math.floor(ancho / (5+2));
-
-	//altura
-	var alto = document.body.clientHeight - 88;
-	var numCeldasAlto = Math.floor(alto / (5+2));
-
-	showGrid(numCeldasAlto+1, numCeldasAncho+1, 5, canvas)
-}
-
-
-
-
-
-// Codigo a ejecutar.
-var elCanvas = document.getElementById("canvasGame");
-cargaGrid(elCanvas);
-
-elCanvas.addEventListener("touchstart", function (event) {
-	abajo(event, grid);
-}, false);
-elCanvas.addEventListener("touchmove", function (event) {
-	mover(event, grid);
-}, false);
-elCanvas.addEventListener("touchend", function (event) {
-	arriba(event);
-}, false);
-
-/*elCanvas.addEventListener("mousedown", function (event) {
-	abajo(event);
-}, false);
-elCanvas.addEventListener("mousemove", function (event) {
-	mover(event);
-}, false);
-elCanvas.addEventListener("mouseup", function (event) {
-	arriba(event);
-}, false);*/
-
-
-
-
-/* ------------------------------
- * -- LISTENERS DE LOS BOTONES --
- * ------------------------------ */
-var botonesCtrl = {
-	"stop"  : document.getElementById("stop"),
-	"play"  : document.getElementById("play"),
-	"next"  : document.getElementById("next"),
-	"trash" : document.getElementById("borrar")
-};
-
-var botonActivo = null;
-function subirBotonesActivos () {
-	if(botonActivo != null)
-		botonActivo.classList.remove("abajo");
-	botonActivo = null;
-}
-
-botonesCtrl["stop"].addEventListener("click", function (event) {
-	subirBotonesActivos();
-	this.classList.add("abajo");
-	botonActivo = this;
-	botonStop();
-}, false);
-botonesCtrl["play"].addEventListener("click", function (event) {
-	subirBotonesActivos();
-	this.classList.add("abajo");
-	botonActivo = this;
-	botonStart();
-}, false);
-botonesCtrl["next"].addEventListener("click", function (event) {
-	this.classList.add("abajo");
-	botonNextRound();
-
-	setTimeout(function () {
-		botonesCtrl["next"].classList.remove("abajo");
-	}, 100);
-}, false);
-botonesCtrl["trash"].addEventListener("click", function (event) {
-	subirBotonesActivos();
-	this.classList.add("abajo");
-	botonActivo = this;
-	botonStop();
-	botonBorrar();
-
-	setTimeout(subirBotonesActivos, 100);
-});
 

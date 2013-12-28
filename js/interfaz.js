@@ -8,11 +8,27 @@ var botones = {
 	"pintar"     : document.getElementById("pintarBoton"),
 	"formas"     : document.getElementById("formasBoton"),
 	"formasBack" : document.getElementById("formasBack"),
-	"zoomBack" : document.getElementById("zoomBack")
+	"zoomBack"   : document.getElementById("zoomBack")
+};
+
+var botonesCtrl = {
+	"stop"  : document.getElementById("stop"),
+	"play"  : document.getElementById("play"),
+	"next"  : document.getElementById("next"),
+	"trash" : document.getElementById("borrar")
+};
+
+var botonesMove = {
+	"izquierda"  : document.getElementById("izquierda"),
+	"abajo"      : document.getElementById("abajo"),
+	"arriba"     : document.getElementById("arriba"),
+	"derecha"    : document.getElementById("derecha")
 };
 
 
-// Ida y vuelta al listado de formas
+/* --------------------------------------
+   --- Ida y vuelta listado de formas ---
+   -------------------------------------- */
 botones["formas"].addEventListener("click", function (ev) {
 	botonStop();  // Paramos la ejecucion
 	ventanas["listado"].className = "current";
@@ -30,7 +46,10 @@ botones["formasBack"].addEventListener("click", function (ev) {
 }, false);
 
 
-// Ida y vuelta a la ventana de zoom
+
+/* ------------------------------------
+   --- Ida y vuelta ventana de zoom ---
+   ------------------------------------ */
 botones["pintar"].addEventListener("click", function (ev) {
 	botonStop();  // Paramos la ejecucion
 	ventanas["zoom"].className = "current";
@@ -53,11 +72,9 @@ botones["zoomBack"].addEventListener("click", function (ev) {
 
 
 
-
-
-
-
-// LISTENERS PARA DIBUJAR LAS FIGURAS
+/* -------------------------------------
+   --- Logica del listado de figuras ---
+   ------------------------------------- */
 document.getElementById("turtleLink").addEventListener("click", function (ev) {
 	Drawer.draw(grid, turtle);
 	ventanas["ventanaPpal"].className = "current";
@@ -111,3 +128,85 @@ document.getElementById("bigGliderLink").addEventListener("click", function (ev)
 	ventanas["ventanaPpal"].className = "current";
 	ventanas["listado"].className = "right";
 }, false);
+
+
+
+/* ---------------------------------------
+   --- Logica de los botones de accion ---
+   --------------------------------------- */
+var botonActivo = null;
+function subirBotonesActivos () {
+	if(botonActivo != null)
+		botonActivo.classList.remove("abajo");
+	botonActivo = null;
+}
+
+botonesCtrl["stop"].addEventListener("click", function (event) {
+	subirBotonesActivos();
+	this.classList.add("abajo");
+	botonActivo = this;
+	botonStop();
+}, false);
+botonesCtrl["play"].addEventListener("click", function (event) {
+	subirBotonesActivos();
+	this.classList.add("abajo");
+	botonActivo = this;
+	botonStart();
+}, false);
+botonesCtrl["next"].addEventListener("click", function (event) {
+	this.classList.add("abajo");
+	botonNextRound();
+
+	setTimeout(function () {
+		botonesCtrl["next"].classList.remove("abajo");
+	}, 100);
+}, false);
+botonesCtrl["trash"].addEventListener("click", function (event) {
+	subirBotonesActivos();
+	this.classList.add("abajo");
+	botonActivo = this;
+	botonStop();
+	botonBorrar();
+
+	setTimeout(subirBotonesActivos, 100);
+});
+
+
+
+/* ----------------------------------
+ * -- Logica de la ventana de zoom --
+ * ---------------------------------- */
+botonesMove["izquierda"].addEventListener("click", function (event) {
+	this.classList.add("abajo");
+	marco.scrollLeft -= 22;
+
+	setTimeout(function () {
+		botonesMove["izquierda"].classList.remove("abajo");
+	}, 100);
+}, false);
+botonesMove["abajo"].addEventListener("click", function (event) {
+	this.classList.add("abajo");
+	marco.scrollTop += 22;
+
+	setTimeout(function () {
+		botonesMove["abajo"].classList.remove("abajo");
+	}, 100);
+}, false);
+botonesMove["arriba"].addEventListener("click", function (event) {
+	this.classList.add("abajo");
+	marco.scrollTop -= 22;
+
+	setTimeout(function () {
+		botonesMove["arriba"].classList.remove("abajo");
+	}, 100);
+}, false);
+botonesMove["derecha"].addEventListener("click", function (event) {
+	this.classList.add("abajo");
+	marco.scrollLeft += 22;
+
+	setTimeout(function () {
+		botonesMove["derecha"].classList.remove("abajo");
+	}, 100);
+});
+
+

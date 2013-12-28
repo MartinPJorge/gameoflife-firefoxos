@@ -69,3 +69,4 @@ function Cell(column, row_) {
 	 */
 	this.setColor = function(color) {color = color;}
 }
+

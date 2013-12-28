@@ -16,6 +16,7 @@ function Grid (rows_, cols_, width, canvas) {
 	var withLine = true;
 	var canvas = canvas;
 
+
 	//Creamos las celdas
 	for(var i = 0; i < rows; i++) {
 		var cellsRow = [];
