@@ -4,7 +4,9 @@
   "description": "Implementation of John Conway's game of life.",
   "launch_path": "/index.html",
   "icons": {
-    "128": "/images/icon.png"
+    "60": "/images/icon.png",
+    "90": "/images/icon-90.png",
+    "128": "/images/icon-128.png"
   },
   "developer": {
     "name": "Jorge Martín Pérez",
